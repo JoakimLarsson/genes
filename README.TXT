@@ -18,6 +18,8 @@ it.
 This is just a simple start so if you want to get serious you probably want to get a 
 real database based genalogy system. 
 
+You can find a working example of Genes here: http://www.bildrulle.nu/cgi-bin/gener.cgi?who=joakim64&level=4
+
 Have Fun!
 
 /Joakim
