@@ -1,143 +1,154 @@
 // Get the full name with correct order of non family names
 function getFullNames(who, when){
-  if (who == undefined){
-    return "?";
-  }
-  if (familj[who] == undefined){
-    return who;
-  }
-  if (familj[who]["nameOrder"] == "flipped"){
-    name = familj[who]["name2"] + " <B>" + familj[who]["name"] + "</B>";
-  }
-  else if (familj[who]["nameOrder"] != undefined){
-    name = "<B>" + familj[who]["name"] + "</B> " + familj[who]["name2"];
-  } 
-  else{
-    name = "<B>" + familj[who]["name"] + "</B>";
-  }
-  if (when == "birth" && familj[who]["lastName"] != undefined){
-      name = name + " " + familj[who]["lastName"];
-  }
-  else if (when == "all" && familj[who]["lastName"] != undefined){
-      name = name + " " + familj[who]["lastName"];
-      if (familj[who]["lastName2"] != undefined){
-          name = name + "/" + familj[who]["lastName2"];
-	if (familj[who]["lastName3"] != undefined){
-          name = name + "/" + familj[who]["lastName3"];
-          if (familj[who]["lastName4"] != undefined){
-            name = name + "/" + familj[who]["lastName4"];
-          }
-        }
-      }
-  }
-  else{
-    if (familj[who]["lastName2"] != undefined){
-      name = name + " " + familj[who]["lastName2"];
+    if (who == undefined){
+	return "?";
     }
-  }
+    if (familj[who] == undefined){
+	return who;
+    }
+    if (familj[who]["nameOrder"] == "flipped"){
+	name = familj[who]["name2"] + " <B>" + familj[who]["name"] + "</B>";
+    }
+    else if (familj[who]["nameOrder"] != undefined){
+	name = "<B>" + familj[who]["name"] + "</B> " + familj[who]["name2"];
+    } 
+    else{
+	name = "<B>" + familj[who]["name"] + "</B>";
+    }
+    if (when == "birth" && familj[who]["lastName"] != undefined){
+	name = name + " " + familj[who]["lastName"];
+    }
+    else if (when == "all" && familj[who]["lastName"] != undefined){
+	name = name + " " + familj[who]["lastName"];
+	if (familj[who]["lastName2"] != undefined){
+            name = name + "/" + familj[who]["lastName2"];
+	    if (familj[who]["lastName3"] != undefined){
+		name = name + "/" + familj[who]["lastName3"];
+		if (familj[who]["lastName4"] != undefined){
+		    name = name + "/" + familj[who]["lastName4"];
+		}
+            }
+	}
+    }
+    else{
+	if (familj[who]["lastName2"] != undefined){
+	    name = name + " " + familj[who]["lastName2"];
+	}
+    }
     
-  return name;
+    return name;
 }
 
 function getLifeTime(who, what){
-  var lifetime="";
-
-  if (who == undefined || familj[who] == undefined){
-    return "";
-  }
-  if (what == "years"){
-    if (familj[who]["birthYear"] != undefined){
-      lifetime = familj[who]["birthYear"] + "-";
+    var lifetime="";
+    
+    if (who == undefined || familj[who] == undefined){
+	return "";
     }
-    else {
-      lifetime= "?-";
+    if (what == "years"){
+	if (familj[who]["birthYear"] != undefined){
+	    lifetime = familj[who]["birthYear"] + "-";
+	}
+	else {
+	    lifetime= "?-";
+	}
+	if (familj[who]["deathYear"] != undefined){
+	    lifetime = lifetime + familj[who]["deathYear"];
+	}
     }
-    if (familj[who]["deathYear"] != undefined){
-      lifetime = lifetime + familj[who]["deathYear"];
+    else{
+	if (familj[who]["birthDate"] != undefined ){
+	    lifetime = familj[who]["birthDate"] + " ";
+	}
+	if (familj[who]["birthYear"] != undefined ){
+	    lifetime = lifetime + familj[who]["birthYear"] + "-";
+	}
+	else {
+	    lifetime= lifetime + "?-";
+	}
+	if (familj[who]["deathDate"] != undefined ){
+	    lifetime = lifetime + familj[who]["deathDate"] + " ";
+	}
+	if (familj[who]["deathYear"] != undefined){
+	    lifetime = lifetime + familj[who]["deathYear"];
+	}
+	else {
+	    lifetime= lifetime + "?";
+	}
     }
-  }
-  else{
-    if (familj[who]["birthDate"] != undefined ){
-      lifetime = familj[who]["birthDate"] + " ";
-    }
-    if (familj[who]["birthYear"] != undefined ){
-      lifetime = lifetime + familj[who]["birthYear"] + "-";
-    }
-    else {
-      lifetime= lifetime + "?-";
-    }
-    if (familj[who]["deathDate"] != undefined ){
-      lifetime = lifetime + familj[who]["deathDate"] + " ";
-    }
-    if (familj[who]["deathYear"] != undefined){
-      lifetime = lifetime + familj[who]["deathYear"];
-    }
-    else {
-      lifetime= lifetime + "?";
-    }
-  }
-
-  return lifetime;
+    
+    return lifetime;
 }
 
 function getDad(who){
-  var dad;
-
-  if (who != undefined && familj[who] != undefined){
-    dad = familj[who]["dad"];
-  }
-  else
-  {
-    dad = undefined;
-  }
-  return dad;
+    var dad;
+    
+    if (who != undefined && familj[who] != undefined){
+	dad = familj[who]["dad"];
+    }
+    else
+    {
+	dad = undefined;
+    }
+    return dad;
 }
 
 function getMom(who){
-  var mom;
+    var mom;
+    
+    if (who != undefined && familj[who] != undefined){
+	mom = familj[who]["mom"];
+    }
+    else
+    {
+	mom = undefined;
+    }
+    return mom;
+}
 
-  if (who != undefined && familj[who] != undefined){
-    mom = familj[who]["mom"];
-  }
-  else
-  {
-    mom = undefined;
-  }
-  return mom;
+function renderMe(who, level){
+    if (level == 1){
+	renderInfo(who);
+    }
+    else{
+	renderTree(who, level);
+	renderKids(who, level);
+    }
+    document.close();
 }
 
 function renderInfo(who){
-  var mom = getMom(who);
-  var dad = getDad(who);
-
-  document.write("<center><H1>");
-  document.write("<A HREF=\"" + "/cgi-bin/gener.cgi?who=");
-  document.write(who + "&level=4\">");
-  document.write(getFullNames(who, "all"));
-//  document.write(" (" + getLifeTime(who, "years") + ")");
-  document.write("</A></H1>");
-
-  document.write("<table width=\"100%\"><tr><td align=\"center\" width=\"25%\">");
-
+    var mom = getMom(who);
+    var dad = getDad(who);
+    
+    document.write("<center><H1>");
+    document.write("<A HREF=\"javascript:renderMe('" + who + "'," + 4 + ")\">");
+    
+    document.write(getFullNames(who, "all"));
+    //  document.write(" (" + getLifeTime(who, "years") + ")");
+    document.write("</A></H1>");
+    
+    document.write("<table width=\"100%\"><tr><td align=\"center\" width=\"25%\">");
+    
     document.write("<table bgcolor=\"#888888\" width=\"100%\">");
     document.write("<tr><td>Född</td><td>" +  getLifeTime(who, "dates"));
     if (familj[who]["birthPlace"] != undefined){
-      document.write(", " + familj[who]["birthPlace"]);
+	document.write(", " + familj[who]["birthPlace"]);
     }
     document.write("</TD></TR>");
     if (familj[who]["occupation"] != undefined){
-      document.write("<TR><TD>Yrke:</TD><TD>" + familj[who]["occupation"] + "</TD></TR>");
+	document.write("<TR><TD>Yrke:</TD><TD>" + familj[who]["occupation"] + "</TD></TR>");
     }
     document.write("<tr><td>Mom:</td><td>");
     if (mom != undefined && familj[mom] != undefined){
-        document.write("<A HREF=\"" + "/cgi-bin/gener.cgi?who=" + mom + "&level=1\">");
+	document.write("<A HREF=\"javascript:renderMe('" + mom + "'," + level + ")\">");
     }
     document.write(getFullNames(mom, "birth"));
     document.write("</A></TD></TR>");
-
+    
     document.write("<tr><td>Dad:</td><td>");
     if (dad != undefined && familj[dad] != undefined){
-        document.write("<A HREF=\"" + "/cgi-bin/gener.cgi?who=" + dad + "&level=1\">");
+	document.write("<A HREF=\"javascript:renderMe('" + dad + "'," + level + ")\">");
     }
     document.write(getFullNames(dad, "birth"));
     document.write("</A></TD></TR>");
@@ -149,285 +160,262 @@ function renderInfo(who){
     renderCousines(who);
     document.write("</TD></TR>");
     if (familj[who]["oldhtml"] != undefined){
-      document.write("<TR><TD COLSPAN=2><B><A HREF=\"" + familj[who]["oldhtml"] + "\">Eventuellt mer info</A></TD></TR>");
+	document.write("<TR><TD COLSPAN=2><B><A HREF=\"" + familj[who]["oldhtml"] + "\">Eventuellt mer info</A></TD></TR>");
     }
     document.write("</table>");
-
-  document.write("</td><td valign=bottom align=\"center\" width=50%>");
-  if (familj[who]["comments"] != undefined){
-    document.write("<font size=\"+1\">" + familj[who]["comments"] + "</font>");
-  }
-  if (familj[who]["source"] != undefined){
-    document.write("<BR><BR><font size=\"-1\">Källor: " + familj[who]["source"] + "</font>");
-  }
-  document.write("</TD>");
-  document.write("<td ALIGN=CENTER width=\"25%\">" + getPortraitImg(who));
-
-  // Support för Langarydssläkten
-  if (familj[who]["langaryd"] != undefined){
-      document.write("<BR><A HREF=langaryd.html><IMG BORDER=0 SRC=langaryd.gif>");
-      document.write("<BR>" + familj[who]["langaryd"] + "</A> ");
-  }
-
-  document.write("</TD></tr></TABLE>");
-
-  return "";
+    
+    document.write("</td><td valign=bottom align=\"center\" width=50%>");
+    if (familj[who]["comments"] != undefined){
+	document.write("<font size=\"+1\">" + familj[who]["comments"] + "</font>");
+    }
+    if (familj[who]["source"] != undefined){
+	document.write("<BR><BR><font size=\"-1\">Källor: " + familj[who]["source"] + "</font>");
+    }
+    document.write("</TD>");
+    document.write("<td ALIGN=CENTER width=\"25%\">" + getPortraitImg(who));
+    document.write("</TD></tr></TABLE>");
+    
+    return "";
 }
 
 function getCousines(who){
-  var msiblings = new Array;
-  var psiblings = new Array;
-  var cousines = new Array;
-
-  if (who != undefined){
-    if (familj[who] != undefined){ 
-      if (familj[who]["mom"] != undefined){
-        msiblings = getSiblings(familj[who]["mom"]); 
-      }
-      if (familj[who]["dad"] != undefined){
-        psiblings = getSiblings(familj[who]["dad"]); 
-      }
+    var msiblings = new Array;
+    var psiblings = new Array;
+    var cousines = new Array;
+    
+    if (who != undefined){
+	if (familj[who] != undefined){ 
+	    if (familj[who]["mom"] != undefined){
+		msiblings = getSiblings(familj[who]["mom"]); 
+	    }
+	    if (familj[who]["dad"] != undefined){
+		psiblings = getSiblings(familj[who]["dad"]); 
+	    }
+	}
+	for (var i in familj){
+	    if (familj[i] != undefined) {
+		if (familj[i]["mom"] != undefined &&
+		    (msiblings[familj[i]["mom"]] != undefined || psiblings[familj[i]["mom"]] != undefined)){
+		    cousines[i] = "x";
+		}
+		
+		if (familj[i]["dad"] != undefined && 
+		    (msiblings[familj[i]["dad"]] != undefined || psiblings[familj[i]["dad"]] != undefined)){
+		    cousines[i] = "x";
+		}
+	    }
+	}
     }
-    for (var i in familj){
-      if (familj[i] != undefined) {
-        if (familj[i]["mom"] != undefined &&
-           (msiblings[familj[i]["mom"]] != undefined || psiblings[familj[i]["mom"]] != undefined)){
-          cousines[i] = "x";
-        }
-
-        if (familj[i]["dad"] != undefined && 
-            (msiblings[familj[i]["dad"]] != undefined || psiblings[familj[i]["dad"]] != undefined)){
-          cousines[i] = "x";
-        }
-      }
-    }
-  }
-  return cousines;
+    return cousines;
 }
 
 function getSiblings(who){
-  var siblings = new Array;
-
-  for (var i in familj){
-    if (i != who && familj[who]  != undefined){ 
-      if (familj[who]["mom"] != undefined){
-        if ( familj[i]["mom"] != undefined && 
-              familj[i]["mom"] == familj[who]["mom"]){
-          siblings[i] = "x";
-        }
-      }
-      if (familj[who]["dad"] != undefined){
-        if ( familj[i]["dad"] != undefined && 
-              familj[i]["dad"] == familj[who]["dad"]){
-          siblings[i] = "x";
-        }
-      }
+    var siblings = new Array;
+    
+    for (var i in familj){
+	if (i != who && familj[who]  != undefined){ 
+	    if (familj[who]["mom"] != undefined){
+		if ( familj[i]["mom"] != undefined && 
+		     familj[i]["mom"] == familj[who]["mom"]){
+		    siblings[i] = "x";
+		}
+	    }
+	    if (familj[who]["dad"] != undefined){
+		if ( familj[i]["dad"] != undefined && 
+		     familj[i]["dad"] == familj[who]["dad"]){
+		    siblings[i] = "x";
+		}
+	    }
+	}
     }
-  }
-  return siblings;
+    return siblings;
 }
 
 function renderSiblings(who){
-  var siblings = new Array;
-  var antal = 0;
-
-  siblings = getSiblings(who);
-  for (var i in siblings){
-    if (antal == 0)
-    {
-      document.write("<FONT SIZE=-1>Siblings:</FONT><BR>");
-      antal++;
+    var siblings = new Array;
+    var antal = 0;
+    
+    siblings = getSiblings(who);
+    for (var i in siblings){
+	if (antal == 0)
+	{
+	    document.write("<FONT SIZE=-1>Siblings:</FONT><BR>");
+	    antal++;
+	}
+	document.write("<A HREF=\"javascript:renderMe('" + i + "'," + 1 + ")\"><NOBR>");
+	document.write("<FONT SIZE=-2>" + getFullNames(i, "birth"));
+	document.write(" (" + getLifeTime(i, "years"));
+	if (familj[i]["birthPlace"] != undefined){
+	    document.write("," + familj[i]["birthPlace"]);
+	}
+	document.write(")");
+	if (familj[i]["occupation"] != undefined){
+	    document.write(", " + familj[i]["occupation"]);
+	}
+	document.write("</NOBR></A></FONT><BR>");
     }
-    document.write("<A HREF=\"" + "/cgi-bin/gener.cgi?who=");
-    document.write(i + "&level=" + 1 + "\"><NOBR>");
-    document.write("<FONT SIZE=-2>" + getFullNames(i, "birth"));
-    document.write(" (" + getLifeTime(i, "years"));
-    if (familj[i]["birthPlace"] != undefined){
-      document.write("," + familj[i]["birthPlace"]);
-    }
-    document.write(")");
-    if (familj[i]["occupation"] != undefined){
-      document.write(", " + familj[i]["occupation"]);
-    }
-    document.write("</NOBR></A></FONT><BR>");
-  }
 }
 
 function renderCousines(who){
-  var cousines = new Array;
-  var antal = 0;
-
-  cousines = getCousines(who);
-  for (var i in cousines){
-    if (antal == 0)
-    {
-      document.write("<FONT SIZE=-1>Cousines:</FONT><BR>");
-      antal++;
+    var cousines = new Array;
+    var antal = 0;
+    
+    cousines = getCousines(who);
+    for (var i in cousines){
+	if (antal == 0)
+	{
+	    document.write("<FONT SIZE=-1>Cousines:</FONT><BR>");
+	    antal++;
+	}
+	document.write("<A HREF=\"javascript:renderMe('" + i + "'," + 1 + ")\"><NOBR>");
+	document.write("<FONT SIZE=-2>" + getFullNames(i, "birth"));
+	document.write(" (" + getLifeTime(i, "years"));
+	if (familj[i]["birthPlace"] != undefined){
+	    document.write("," + familj[i]["birthPlace"]);
+	}
+	document.write(")");
+	if (familj[i]["occupation"] != undefined){
+	    document.write(", " + familj[i]["occupation"]);
+	}
+	document.write("</NOBR></A></FONT><BR>");
     }
-    document.write("<A HREF=\"" + "/cgi-bin/gener.cgi?who=");
-    document.write(i + "&level=" + 1 + "\"><NOBR>");
-    document.write("<FONT SIZE=-2>" + getFullNames(i, "birth"));
-    document.write(" (" + getLifeTime(i, "years"));
-    if (familj[i]["birthPlace"] != undefined){
-      document.write("," + familj[i]["birthPlace"]);
-    }
-    document.write(")");
-    if (familj[i]["occupation"] != undefined){
-      document.write(", " + familj[i]["occupation"]);
-    }
-    document.write("</NOBR></A></FONT><BR>");
-  }
 }
 
 function renderKids(who, level){
-  var barn = 0;
-  for (var i in familj){
-    if (familj[i]        != undefined){ 
-      if ( (familj[i]["mom"] != undefined && familj[i]["mom"] == who) ||
-             (familj[i]["dad"] != undefined && familj[i]["dad"] == who) ){
-          if (barn == 0){
-            document.write("<FONT SIZE=-1>Barn:</FONT><BR>");
-            barn++;
-          }
-          document.write("<A HREF=\"" + "/cgi-bin/gener.cgi?who=");
-          document.write(i + "&level=" + level + "\"><NOBR>");
-          document.write("<FONT SIZE=-2>" + getFullNames(i, "birth"));
-          document.write(" (" + getLifeTime(i, "years"));
-          if (familj[i]["birthPlace"] != undefined){
-            document.write("," + familj[i]["birthPlace"]);
-          }
-          document.write(")");
-          if (familj[i]["occupation"] != undefined){
-            document.write(", " + familj[i]["occupation"]);
-          }
-          document.write("</NOBR></FONT></A><BR>");
-      }
+    var barn = 0;
+    for (var i in familj){
+	if (familj[i]        != undefined){ 
+	    if ( (familj[i]["mom"] != undefined && familj[i]["mom"] == who) ||
+		 (familj[i]["dad"] != undefined && familj[i]["dad"] == who) ){
+		if (barn == 0){
+		    document.write("<FONT SIZE=-1>Barn:</FONT><BR>");
+		    barn++;
+		}
+		document.write("<A HREF=\"javascript:renderMe('" + i + "'," + level + ")\"><NOBR>");
+		document.write("<FONT SIZE=-2>" + getFullNames(i, "birth"));
+		document.write(" (" + getLifeTime(i, "years"));
+		if (familj[i]["birthPlace"] != undefined){
+		    document.write("," + familj[i]["birthPlace"]);
+		}
+		document.write(")");
+		if (familj[i]["occupation"] != undefined){
+		    document.write(", " + familj[i]["occupation"]);
+		}
+		document.write("</NOBR></FONT></A><BR>");
+	    }
+	}
     }
-  }
-  return "";
+    return "";
 }
 
 function getPortraitUrl(who){
-  var url;
-
-  if (familj[who]["portrait"] != undefined){
-    url = familj[who]["portrait"];
-  }
-  else
-  {
-    url = "";
-  }
-  return url;
+    var url;
+    
+    if (familj[who]["portrait"] != undefined){
+	url = familj[who]["portrait"];
+    }
+    else
+    {
+	url = "";
+    }
+    return url;
 }
 
 function getPortraitImg(who){
-  var img = "";
-  if (who != undefined && familj[who] != undefined && familj[who]["portrait"] != undefined){
-    img = "<IMG BORDER=0 SRC=\"" + getPortraitUrl(who) + "\">";
-  }
-  return img;
+    var img = "";
+    if (who != undefined && familj[who] != undefined && familj[who]["portrait"] != undefined){
+	img = "<IMG BORDER=0 SRC=\"" + getPortraitUrl(who) + "\">";
+    }
+    return img;
 }
 
 function renderTree(who, level){
-  var ppl = new Array;
-  var i, j = 0;
-  ppl[j] = who;
-  var pops;
-
-  pops = 1;
-  for (i=0; i < level; i++){ pops = pops * 2; }
-  pops -= 1;
-
-//  document.write(pops + "<BR>");
-
-  for (i = 1; i<pops; i++){
-    if (i & 1){
-//      document.write("p");
-      ppl[i] = getDad(ppl[j]);
+    var ppl = new Array;
+    var i, j = 0;
+    ppl[j] = who;
+    var pops;
+    
+    pops = 1;
+    for (i=0; i < level; i++){ pops = pops * 2; }
+    pops -= 1;
+    
+    for (i = 1; i<pops; i++){
+	if (i & 1){
+	    ppl[i] = getDad(ppl[j]);
+	}
+	else{
+	    //      document.write("m");
+	    ppl[i] = getMom(ppl[j]);
+	    j++;
+	}
     }
-    else{
-//      document.write("m");
-      ppl[i] = getMom(ppl[j]);
-      j++;
+    i--;
+    cspan = 1;
+    pops = pops + 1;
+    unit = (100 - (100 % (pops))) / pops;
+    iwstep = 60 / level;
+    iw = 60 - iwstep;
+    j = 0;
+    document.write("<TABLE BORDER=0 CELLPADDING=5 WIDTH=100%>\n");  
+    for(i = i; i >= 0; i--){
+	if (j == 0){
+	    document.write("<TR>\n");
+	    cspan = cspan * 2;
+	    pops = pops / 2;
+	    unit = unit * 2;
+	    iw   = iw + iwstep;
+	    j = pops;
+	}
+	document.write("<TD WIDTH=\"" + unit + "%\"");
+	if (ppl[i] != undefined && familj[ppl[i]] != undefined && familj[ppl[i]]["portrait"] != undefined){
+            document.write("VALIGN=TOP ");
+	}
+	else{
+            document.write("VALIGN=CENTER ");
+	}
+	document.write("ALIGN=CENTER COLSPAN=" + cspan + ">");
+	if (ppl[i] != undefined && familj[ppl[i]] != undefined){     
+	    if (pops == 1){
+		if (familj[ppl[i]]["html"] != undefined){
+		    document.write("<A HREF=\"" + familj[ppl[i]]["html"] + "\">");
+		}
+		else{
+		    document.write("<A HREF=\"javascript:renderMe('" + ppl[i] + "'," + 1 + ")\">");
+		}
+	    }
+	    else{
+		document.write("<A HREF=\"javascript:renderMe('" + ppl[i] + "'," + 4 + ")\">");
+	    }
+	    
+	    if (familj[ppl[i]]["portrait"] != undefined){
+		document.write("<IMG BORDER=0 WIDTH=\"");
+		document.write(Math.ceil(iw) + "\" SRC=\"" + familj[ppl[i]]["portrait"] + "\"><BR>");
+	    }
+	    document.write("<FONT SIZE=-2>" + getFullNames(ppl[i], "birth"));
+	    document.write(" (" + getLifeTime(ppl[i], "years"));
+	    if (familj[ppl[i]]["birthPlace"] != undefined){
+		document.write("," + familj[ppl[i]]["birthPlace"]);
+	    }
+	    document.write(")");
+	    if (familj[ppl[i]]["occupation"] != undefined){
+		document.write(", " + familj[ppl[i]]["occupation"]);
+	    }
+	    document.write("</A>");	    
+	}
+	else{
+	    if (ppl[i] != undefined){
+		document.write(ppl[i]);
+	    }
+	    else{
+		document.write("?");
+	    }
+	}
+	document.write( "</FONT><BR>\n");
+	j--;
     }
-  }
-  i--;
-  cspan = 1;
-  pops = pops + 1;
-  unit = (100 - (100 % (pops))) / pops;
-  iwstep = 60 / level;
-  iw = 60 - iwstep;
-  j = 0;
-  document.write("<TABLE BORDER=0 CELLPADDING=5 WIDTH=100%>\n");  
-  for(i = i; i >= 0; i--){
-    if (j == 0){
-      document.write("<TR>\n");
-      cspan = cspan * 2;
-      pops = pops / 2;
-      unit = unit * 2;
-      iw   = iw + iwstep;
-      j = pops;
-    }
-    document.write("<TD WIDTH=\"" + unit + "%\"");
-    if (ppl[i] != undefined && familj[ppl[i]] != undefined && familj[ppl[i]]["portrait"] != undefined){
-        document.write("VALIGN=TOP ");
-    }
-    else{
-        document.write("VALIGN=CENTER ");
-    }
-    document.write("ALIGN=CENTER COLSPAN=" + cspan + ">");
-    if (ppl[i] != undefined && familj[ppl[i]] != undefined){     
-      if (pops == 1){
-        if (familj[ppl[i]]["html"] != undefined){
-            document.write("<A HREF=\"" + familj[ppl[i]]["html"] + "\">");
-        }
-        else{
-          document.write("<A HREF=\"" + "/cgi-bin/gener.cgi?who=");
-          document.write(ppl[i] + "&level=1\">");
-        }
-      }
-      else
-      {
-          document.write("<A HREF=\"" + "/cgi-bin/gener.cgi?who=");
-          document.write(ppl[i] + "&level=4\">");
-      }
-
-      if (familj[ppl[i]]["portrait"] != undefined){
-        document.write("<IMG BORDER=0 WIDTH=\"");
-        document.write(Math.ceil(iw) + "\" SRC=\"" + familj[ppl[i]]["portrait"] + "\"><BR>");
-      }
-      document.write("<FONT SIZE=-2>" + getFullNames(ppl[i], "birth"));
-      document.write(" (" + getLifeTime(ppl[i], "years"));
-      if (familj[ppl[i]]["birthPlace"] != undefined){
-        document.write("," + familj[ppl[i]]["birthPlace"]);
-      }
-      document.write(")");
-      if (familj[ppl[i]]["occupation"] != undefined){
-        document.write(", " + familj[ppl[i]]["occupation"]);
-      }
-      document.write("</A>");
-
-      // Support för Langarydssläkten
-      if (familj[ppl[i]]["langaryd"] != undefined){
-          document.write("<A HREF=langaryd.html>" + 
-                         "<IMG BORDER=0 HEIGHT=10 WIDTH=10 SRC=langaryd.gif HSPACE=2></A>");
-      }
-
-    }
-    else{
-      if (ppl[i] != undefined){
-        document.write(ppl[i]);
-      }
-      else{
-        document.write("?");
-      }
-    }
-    document.write( "</FONT><BR>\n");
-    j--;
-  }
-  document.write("</TABLE>");
-
-  return "";
+    document.write("</TABLE>");
+    
+    return "";
 }
 
 var familj = new Array();
