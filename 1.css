@@ -1,0 +1,17 @@
+body { 
+  font-family: Verdana, Arial, Helvetica, sans-serif; 
+  font-size: 10pt;
+  font-weight: bold;
+  background-color: lightyellow;
+  color: black;
+} 
+p  { font-family: Verdana, Arial, Helvetica, sans-serif  ; font-size: 10pt ; color: black; font-weight: bold }
+td { font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 10pt ; color: black; font-weight: bold }
+th { font-family: Verdana, Arial, Helvetica, sans-serif ; font-size: 12pt ; color: black }
+h1 { font-family: Helvetica, Courier; font-size: 24pt; color: black}
+h2 { font-family: Helvetica, Courier; font-weight: bold; font-size: 12pt; color: black }
+h3 { font-family: Helvetica, Courier; font-size: 10pt; color: black}
+A:link { color: brown; font-weight: bold }
+A:visited { color: purple; }
+A:hover { color: purple; }
+A {text-decoration:none;}
