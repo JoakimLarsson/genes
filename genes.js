@@ -112,7 +112,9 @@ function renderMe(who, level){
     }
     else{
 	renderTree(who, level);
+	document.write("<CENTER>");
 	renderKids(who, level);
+	document.write("</CENTER>");
     }
     document.close();
 }
@@ -245,11 +247,11 @@ function renderSiblings(who){
 	if (familj[i]["birthPlace"] != undefined){
 	    document.write("," + familj[i]["birthPlace"]);
 	}
-	document.write(")");
+	document.write(")</NOBR></A>");
 	if (familj[i]["occupation"] != undefined){
 	    document.write(", " + familj[i]["occupation"]);
 	}
-	document.write("</NOBR></A></FONT><BR>");
+	document.write("</FONT><BR>");
     }
 }
 
@@ -294,11 +296,11 @@ function renderKids(who, level){
 		if (familj[i]["birthPlace"] != undefined){
 		    document.write("," + familj[i]["birthPlace"]);
 		}
-		document.write(")");
+		document.write(")</NOBR></A>");
 		if (familj[i]["occupation"] != undefined){
 		    document.write(", " + familj[i]["occupation"]);
 		}
-		document.write("</NOBR></FONT></A><BR>");
+		document.write("</FONT><BR>");
 	    }
 	}
     }
@@ -393,11 +395,10 @@ function renderTree(who, level){
 	    if (familj[ppl[i]]["birthPlace"] != undefined){
 		document.write("," + familj[ppl[i]]["birthPlace"]);
 	    }
-	    document.write(")");
+	    document.write(")</A>");
 	    if (familj[ppl[i]]["occupation"] != undefined){
 		document.write(", " + familj[ppl[i]]["occupation"]);
 	    }
-	    document.write("</A>");	    
 	}
 	else{
 	    if (ppl[i] != undefined){
