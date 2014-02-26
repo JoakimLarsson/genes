@@ -131,24 +131,24 @@ function renderInfo(who){
     document.write("<table width=\"100%\"><tr><td align=\"center\" width=\"25%\">");
     
     document.write("<table bgcolor=\"#888888\" width=\"100%\">");
-    document.write("<tr><td>Född</td><td>" +  getLifeTime(who, "dates"));
+    document.write("<tr><td>Lived:</td><td>" +  getLifeTime(who, "dates"));
     if (familj[who]["birthPlace"] != undefined){
 	document.write(", " + familj[who]["birthPlace"]);
     }
     document.write("</TD></TR>");
     if (familj[who]["occupation"] != undefined){
-	document.write("<TR><TD>Yrke:</TD><TD>" + familj[who]["occupation"] + "</TD></TR>");
+	document.write("<TR><TD>Occupation:</TD><TD>" + familj[who]["occupation"] + "</TD></TR>");
     }
-    document.write("<tr><td>Mom:</td><td>");
+    document.write("<tr><td>Mother:</td><td>");
     if (mom != undefined && familj[mom] != undefined){
-	document.write("<A HREF=\"javascript:renderMe('" + mom + "'," + level + ")\">");
+	document.write("<A HREF=\"javascript:renderMe('" + mom + "'," + 1 + ")\">");
     }
     document.write(getFullNames(mom, "birth"));
     document.write("</A></TD></TR>");
     
-    document.write("<tr><td>Dad:</td><td>");
+    document.write("<tr><td>Father:</td><td>");
     if (dad != undefined && familj[dad] != undefined){
-	document.write("<A HREF=\"javascript:renderMe('" + dad + "'," + level + ")\">");
+	document.write("<A HREF=\"javascript:renderMe('" + dad + "'," + 1 + ")\">");
     }
     document.write(getFullNames(dad, "birth"));
     document.write("</A></TD></TR>");
@@ -159,9 +159,6 @@ function renderInfo(who){
     document.write("<BR>");
     renderCousines(who);
     document.write("</TD></TR>");
-    if (familj[who]["oldhtml"] != undefined){
-	document.write("<TR><TD COLSPAN=2><B><A HREF=\"" + familj[who]["oldhtml"] + "\">Eventuellt mer info</A></TD></TR>");
-    }
     document.write("</table>");
     
     document.write("</td><td valign=bottom align=\"center\" width=50%>");
@@ -288,7 +285,7 @@ function renderKids(who, level){
 	    if ( (familj[i]["mom"] != undefined && familj[i]["mom"] == who) ||
 		 (familj[i]["dad"] != undefined && familj[i]["dad"] == who) ){
 		if (barn == 0){
-		    document.write("<FONT SIZE=-1>Barn:</FONT><BR>");
+		    document.write("<FONT SIZE=-1>Children:</FONT><BR>");
 		    barn++;
 		}
 		document.write("<A HREF=\"javascript:renderMe('" + i + "'," + level + ")\"><NOBR>");
